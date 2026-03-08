@@ -1,0 +1,1202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>For the beautiful woman you’ve become</title>
+  <style>
+    :root{
+      --bg-1:#1f151a;
+      --bg-2:#34232c;
+      --bg-3:#4a313c;
+      --bg-4:#6a4650;
+      --wine:#5a3742;
+      --plum:#3b2731;
+      --mauve:#8c6873;
+      --rose:#f3e6e8;
+      --text:#fff7f8;
+      --text-soft:#ecd9de;
+      --text-muted:#d8bec7;
+      --line:rgba(255,255,255,0.14);
+      --glass:rgba(255,255,255,0.09);
+      --glass-strong:rgba(255,255,255,0.13);
+      --shadow:0 30px 80px rgba(0,0,0,0.35);
+      --shadow-soft:0 12px 38px rgba(0,0,0,0.24);
+      --glow:rgba(255,225,190,0.18);
+      --card-border:rgba(255,255,255,0.18);
+      --transition:480ms cubic-bezier(.22,1,.36,1);
+    }
+
+    *{
+      box-sizing:border-box;
+      -webkit-tap-highlight-color:transparent;
+    }
+
+    html,body{
+      margin:0;
+      min-height:100%;
+      font-family:"Inter","Segoe UI",Roboto,Arial,sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(circle at 15% 10%, rgba(255,235,223,0.08), transparent 26%),
+        radial-gradient(circle at 85% 8%, rgba(255,210,220,0.07), transparent 24%),
+        radial-gradient(circle at 50% 35%, rgba(255,235,190,0.05), transparent 32%),
+        linear-gradient(180deg, #170f13 0%, var(--bg-1) 16%, var(--bg-2) 46%, var(--bg-3) 74%, #24181d 100%);
+      overflow-x:hidden;
+    }
+
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      background:
+        radial-gradient(circle at 50% 0%, rgba(255,255,255,0.03), transparent 28%),
+        radial-gradient(circle at 50% 100%, rgba(255,220,205,0.05), transparent 30%);
+      pointer-events:none;
+      z-index:-5;
+    }
+
+    body.loaded .hero{
+      opacity:1;
+      transform:translateY(0);
+    }
+
+    body.loaded .subtitle,
+    body.loaded .small-line{
+      opacity:1;
+      transform:translateY(0);
+    }
+
+    body.loaded .bouquet-shell{
+      opacity:1;
+      transform:translateY(0) scale(1);
+    }
+
+    body.loaded .flower-hit{
+      opacity:1;
+      transform:translateY(0) scale(1);
+    }
+
+    .page{
+      position:relative;
+      min-height:100vh;
+      overflow:hidden;
+      isolation:isolate;
+      padding:32px 18px 28px;
+    }
+
+    .ambient{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      z-index:-1;
+      overflow:hidden;
+    }
+
+    .float{
+      position:absolute;
+      will-change:transform, opacity;
+      animation:drift linear infinite;
+      opacity:.5;
+      pointer-events:none;
+    }
+
+    .float.petal{
+      width:22px;
+      height:14px;
+      border-radius:70% 30% 68% 32% / 58% 42% 58% 42%;
+      background:
+        radial-gradient(circle at 30% 35%, rgba(255,255,255,.96), rgba(255,244,246,.82) 52%, rgba(255,233,237,.25) 78%, rgba(255,233,237,0) 100%);
+      box-shadow:
+        0 0 18px rgba(255,255,255,.08),
+        inset 0 -1px 2px rgba(178,150,157,.25);
+      filter:blur(.15px);
+    }
+
+    .float.breath{
+      width:5px;
+      height:5px;
+      border-radius:50%;
+      background:rgba(255,255,255,.9);
+      box-shadow:
+        8px 3px 0 rgba(255,255,255,.5),
+        -7px 7px 0 rgba(255,255,255,.35),
+        3px -7px 0 rgba(255,255,255,.28),
+        -6px -3px 0 rgba(255,255,255,.2);
+      filter:blur(.1px);
+    }
+
+    .float.gold{
+      width:6px;
+      height:6px;
+      border-radius:50%;
+      background:
+        radial-gradient(circle, rgba(255,232,162,.95) 0%, rgba(230,182,78,.6) 50%, rgba(230,182,78,0) 100%);
+      box-shadow:
+        0 0 18px rgba(239,192,91,.32),
+        0 0 34px rgba(255,225,146,.12);
+    }
+
+    @keyframes drift{
+      0%{
+        transform:translate3d(0, 112vh, 0) rotate(0deg) scale(.85);
+      }
+      100%{
+        transform:translate3d(var(--x,0px), -18vh, 0) rotate(300deg) scale(1.12);
+      }
+    }
+
+    .container{
+      position:relative;
+      width:min(1180px, 100%);
+      margin:0 auto;
+      z-index:1;
+    }
+
+    .hero{
+      text-align:center;
+      max-width:760px;
+      margin:0 auto 26px;
+      opacity:0;
+      transform:translateY(18px);
+      transition:900ms ease;
+    }
+
+    h1{
+      margin:0;
+      font-family:"Cormorant Garamond","Georgia","Times New Roman",serif;
+      font-size:clamp(3rem, 5vw, 4.6rem);
+      line-height:0.95;
+      font-weight:600;
+      letter-spacing:-0.03em;
+      color:#fff7f8;
+      text-shadow:
+        0 3px 28px rgba(255,218,222,0.08),
+        0 1px 0 rgba(255,255,255,0.08);
+    }
+
+    .subtitle{
+      margin:18px auto 0;
+      font-family:"Cormorant Garamond","Georgia","Times New Roman",serif;
+      font-style:italic;
+      font-size:clamp(1.35rem, 1.9vw, 1.65rem);
+      line-height:1.35;
+      color:var(--text-soft);
+      opacity:0;
+      transform:translateY(14px);
+      transition:900ms ease .18s;
+    }
+
+    .small-line{
+      margin:10px auto 0;
+      max-width:36ch;
+      font-size:1rem;
+      line-height:1.5;
+      color:var(--text-muted);
+      opacity:0;
+      transform:translateY(14px);
+      transition:900ms ease .34s;
+    }
+
+    .main-stage{
+      position:relative;
+      display:flex;
+      justify-content:center;
+      margin:10px auto 0;
+    }
+
+    .bouquet-shell{
+      position:relative;
+      width:min(860px, 100%);
+      height:860px;
+      opacity:0;
+      transform:translateY(26px) scale(.985);
+      transition:950ms cubic-bezier(.22,1,.36,1) .18s;
+    }
+
+    .bouquet-shell::before{
+      content:"";
+      position:absolute;
+      inset:3% 10% 18%;
+      border-radius:50%;
+      background:
+        radial-gradient(circle at 50% 45%, rgba(255,247,240,0.08), rgba(255,220,205,0.03) 34%, rgba(255,220,205,0) 70%);
+      filter:blur(18px);
+      z-index:0;
+      pointer-events:none;
+    }
+
+    .bouquet-shadow{
+      position:absolute;
+      left:50%;
+      bottom:54px;
+      transform:translateX(-50%);
+      width:470px;
+      height:120px;
+      background:radial-gradient(ellipse at center, rgba(0,0,0,.42), rgba(0,0,0,0) 72%);
+      filter:blur(16px);
+      z-index:0;
+      pointer-events:none;
+    }
+
+    .bouquet-back-glow{
+      position:absolute;
+      left:50%;
+      top:48%;
+      transform:translate(-50%,-50%);
+      width:620px;
+      height:620px;
+      border-radius:50%;
+      background:
+        radial-gradient(circle, rgba(255,234,213,0.08) 0%, rgba(255,214,186,0.04) 28%, rgba(255,214,186,0) 70%);
+      filter:blur(26px);
+      z-index:0;
+      pointer-events:none;
+    }
+
+    .bouquet-images{
+      position:absolute;
+      inset:0;
+      z-index:2;
+      pointer-events:none;
+    }
+
+    .flower-image{
+      position:absolute;
+      user-select:none;
+      pointer-events:none;
+      filter:
+        drop-shadow(0 12px 18px rgba(0,0,0,.22))
+        drop-shadow(0 26px 38px rgba(0,0,0,.12));
+      transform-origin:center bottom;
+      transition:transform var(--transition), filter var(--transition);
+    }
+
+    .flower-image img{
+      width:100%;
+      height:auto;
+      display:block;
+      object-fit:contain;
+      user-select:none;
+      -webkit-user-drag:none;
+    }
+
+    .flower-image::after{
+      content:"";
+      position:absolute;
+      inset:18% 18% 20%;
+      border-radius:50%;
+      background:radial-gradient(circle, rgba(255,233,196,0.18), rgba(255,233,196,0) 68%);
+      filter:blur(16px);
+      opacity:.22;
+      z-index:-1;
+    }
+
+    .flower-hit{
+      position:absolute;
+      z-index:4;
+      border:none;
+      padding:0;
+      background:none;
+      cursor:pointer;
+      opacity:0;
+      transform:translateY(18px) scale(.96);
+      transition:
+        transform var(--transition),
+        opacity 800ms ease,
+        filter var(--transition),
+        box-shadow var(--transition);
+      outline:none;
+      border-radius:50%;
+      touch-action:manipulation;
+    }
+
+    .flower-hit::before{
+      content:"";
+      position:absolute;
+      inset:10%;
+      border-radius:50%;
+      background:radial-gradient(circle, rgba(255,229,186,0.2), rgba(255,229,186,0) 68%);
+      filter:blur(14px);
+      opacity:0;
+      transition:opacity var(--transition), transform var(--transition);
+      transform:scale(.82);
+      pointer-events:none;
+    }
+
+    .flower-hit:hover,
+    .flower-hit:focus-visible{
+      transform:translateY(-3px) scale(1.03);
+      filter:drop-shadow(0 0 18px rgba(255,227,181,.28));
+    }
+
+    .flower-hit:focus-visible{
+      box-shadow:0 0 0 2px rgba(255,234,209,.18);
+    }
+
+    .flower-hit.opened{
+      z-index:10;
+    }
+
+    .flower-hit.opened::before{
+      opacity:1;
+      transform:scale(1.12);
+    }
+
+    .flower-hit.opened + .flower-image{
+      transform:scale(1.05) translateY(-4px);
+      filter:
+        drop-shadow(0 18px 22px rgba(0,0,0,.22))
+        drop-shadow(0 34px 48px rgba(0,0,0,.16));
+    }
+
+    .flower-hit.opened + .flower-image::after{
+      opacity:.45;
+    }
+
+    .opened-badge{
+      position:absolute;
+      right:14%;
+      bottom:14%;
+      width:34px;
+      height:34px;
+      border-radius:50%;
+      display:grid;
+      place-items:center;
+      font-size:.92rem;
+      color:#69444e;
+      background:rgba(255,245,248,.85);
+      border:1px solid rgba(255,255,255,.5);
+      box-shadow:0 10px 22px rgba(0,0,0,.16);
+      backdrop-filter:blur(10px);
+      -webkit-backdrop-filter:blur(10px);
+      opacity:0;
+      transform:translateY(8px) scale(.82);
+      transition:transform var(--transition), opacity var(--transition);
+      pointer-events:none;
+    }
+
+    .flower-hit.opened .opened-badge{
+      opacity:1;
+      transform:translateY(0) scale(1);
+    }
+
+    .stem-fan{
+      position:absolute;
+      left:50%;
+      bottom:130px;
+      transform:translateX(-50%);
+      width:520px;
+      height:290px;
+      z-index:1;
+      pointer-events:none;
+      opacity:.84;
+      filter:drop-shadow(0 18px 22px rgba(0,0,0,.18));
+    }
+
+    .stem-fan span{
+      position:absolute;
+      bottom:0;
+      left:50%;
+      width:10px;
+      height:280px;
+      border-radius:999px;
+      background:linear-gradient(180deg, rgba(127,164,111,.9), rgba(70,104,69,.95));
+      transform-origin:center bottom;
+      box-shadow:inset 0 0 0 1px rgba(255,255,255,.05);
+    }
+
+    .stem-fan span:nth-child(1){ transform:translateX(-50%) rotate(-28deg); }
+    .stem-fan span:nth-child(2){ transform:translateX(-50%) rotate(-20deg); height:292px; }
+    .stem-fan span:nth-child(3){ transform:translateX(-50%) rotate(-12deg); height:286px; }
+    .stem-fan span:nth-child(4){ transform:translateX(-50%) rotate(-4deg); height:298px; }
+    .stem-fan span:nth-child(5){ transform:translateX(-50%) rotate(6deg); height:294px; }
+    .stem-fan span:nth-child(6){ transform:translateX(-50%) rotate(14deg); height:286px; }
+    .stem-fan span:nth-child(7){ transform:translateX(-50%) rotate(22deg); height:292px; }
+    .stem-fan span:nth-child(8){ transform:translateX(-50%) rotate(30deg); height:280px; }
+
+    .bouquet-wrap{
+      position:absolute;
+      left:50%;
+      bottom:38px;
+      transform:translateX(-50%);
+      width:470px;
+      height:300px;
+      z-index:3;
+      pointer-events:none;
+      filter:drop-shadow(0 24px 34px rgba(0,0,0,.18));
+    }
+
+    .bouquet-wrap::before,
+    .bouquet-wrap::after{
+      content:"";
+      position:absolute;
+      bottom:0;
+      width:270px;
+      height:260px;
+      background:
+        linear-gradient(180deg, rgba(255,246,240,0.2), rgba(255,232,223,0.11));
+      border:1px solid rgba(255,255,255,0.14);
+      backdrop-filter:blur(10px);
+      -webkit-backdrop-filter:blur(10px);
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.12),
+        0 18px 40px rgba(0,0,0,.12);
+    }
+
+    .bouquet-wrap::before{
+      left:18px;
+      transform:rotate(-16deg);
+      clip-path:polygon(0 0, 100% 0, 64% 100%, 10% 86%);
+      border-radius:18px 24px 110px 80px;
+    }
+
+    .bouquet-wrap::after{
+      right:18px;
+      transform:rotate(16deg);
+      clip-path:polygon(0 0, 100% 0, 90% 86%, 36% 100%);
+      border-radius:24px 18px 80px 110px;
+    }
+
+    .wrap-highlight{
+      position:absolute;
+      left:50%;
+      bottom:62px;
+      transform:translateX(-50%);
+      width:160px;
+      height:36px;
+      border-radius:999px;
+      background:linear-gradient(180deg, rgba(218,164,177,.62), rgba(122,75,88,.78));
+      box-shadow:
+        0 10px 18px rgba(0,0,0,.14),
+        inset 0 1px 0 rgba(255,255,255,.2);
+      z-index:4;
+      pointer-events:none;
+    }
+
+    .counter{
+      margin:20px auto 0;
+      width:max-content;
+      padding:10px 16px;
+      border-radius:999px;
+      background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.12);
+      color:var(--text-muted);
+      font-size:.96rem;
+      letter-spacing:.01em;
+      box-shadow:var(--shadow-soft);
+      backdrop-filter:blur(12px);
+      -webkit-backdrop-filter:blur(12px);
+    }
+
+    .hint{
+      text-align:center;
+      margin-top:8px;
+      color:var(--text-muted);
+      font-size:.98rem;
+    }
+
+    .modal{
+      position:fixed;
+      inset:0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:24px;
+      background:rgba(16,10,13,.54);
+      backdrop-filter:blur(8px);
+      -webkit-backdrop-filter:blur(8px);
+      opacity:0;
+      visibility:hidden;
+      transition:opacity 280ms ease, visibility 280ms ease;
+      z-index:60;
+    }
+
+    .modal.show{
+      opacity:1;
+      visibility:visible;
+    }
+
+    .card{
+      position:relative;
+      width:min(100%, 500px);
+      max-height:min(84vh, 720px);
+      overflow:auto;
+      border-radius:28px;
+      padding:24px 22px 20px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.07));
+      border:1px solid var(--card-border);
+      box-shadow:
+        0 26px 70px rgba(0,0,0,.34),
+        inset 0 1px 0 rgba(255,255,255,.12);
+      color:var(--text);
+      backdrop-filter:blur(18px);
+      -webkit-backdrop-filter:blur(18px);
+      transform:translateY(10px) scale(.98);
+      transition:transform 320ms ease;
+    }
+
+    .modal.show .card{
+      transform:translateY(0) scale(1);
+    }
+
+    .card::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      border-radius:inherit;
+      background:
+        radial-gradient(circle at top left, rgba(255,255,255,.1), transparent 38%),
+        radial-gradient(circle at bottom right, rgba(255,224,200,.08), transparent 42%);
+      pointer-events:none;
+    }
+
+    .close-btn{
+      position:sticky;
+      top:0;
+      margin-left:auto;
+      width:40px;
+      height:40px;
+      border:none;
+      border-radius:50%;
+      display:grid;
+      place-items:center;
+      background:rgba(255,255,255,.12);
+      color:var(--text);
+      cursor:pointer;
+      backdrop-filter:blur(12px);
+      -webkit-backdrop-filter:blur(12px);
+      border:1px solid rgba(255,255,255,.14);
+      box-shadow:0 10px 20px rgba(0,0,0,.14);
+      z-index:2;
+    }
+
+    .card-content{
+      position:relative;
+      z-index:1;
+      margin-top:8px;
+    }
+
+    .card-flower-label{
+      font-size:.82rem;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+      color:#e4c7d1;
+      margin-bottom:12px;
+      font-weight:600;
+    }
+
+    .card h2{
+      margin:0 0 12px;
+      font-family:"Cormorant Garamond","Georgia","Times New Roman",serif;
+      font-size:2.15rem;
+      line-height:1.02;
+      font-weight:600;
+      color:#fff8fa;
+    }
+
+    .card p{
+      margin:0;
+      font-size:1.02rem;
+      line-height:1.8;
+      color:#f0dee3;
+    }
+
+    .secret{
+      max-width:760px;
+      margin:42px auto 18px;
+      opacity:0;
+      transform:translateY(18px) scale(.98);
+      pointer-events:none;
+      transition:720ms cubic-bezier(.22,1,.36,1);
+    }
+
+    .secret.revealed{
+      opacity:1;
+      transform:translateY(0) scale(1);
+      pointer-events:auto;
+    }
+
+    .secret-card{
+      position:relative;
+      padding:28px 24px 24px;
+      border-radius:30px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.11), rgba(255,255,255,.07));
+      border:1px solid rgba(255,255,255,.14);
+      box-shadow:
+        0 28px 72px rgba(0,0,0,.28),
+        inset 0 1px 0 rgba(255,255,255,.12);
+      backdrop-filter:blur(18px);
+      -webkit-backdrop-filter:blur(18px);
+      overflow:hidden;
+    }
+
+    .secret-card::before{
+      content:"";
+      position:absolute;
+      inset:-16%;
+      background:
+        radial-gradient(circle at 50% 20%, rgba(255,224,170,.22), transparent 26%),
+        radial-gradient(circle at 20% 75%, rgba(255,255,255,.08), transparent 24%),
+        radial-gradient(circle at 82% 75%, rgba(255,210,190,.08), transparent 24%);
+      animation:secretGlow 4.5s ease-in-out infinite alternate;
+      pointer-events:none;
+    }
+
+    @keyframes secretGlow{
+      from{ transform:scale(.98); opacity:.72; }
+      to{ transform:scale(1.04); opacity:1; }
+    }
+
+    .secret h3{
+      position:relative;
+      z-index:1;
+      margin:0 0 14px;
+      text-align:center;
+      font-family:"Cormorant Garamond","Georgia","Times New Roman",serif;
+      font-size:2.5rem;
+      line-height:.98;
+      font-weight:600;
+      color:#fff8fa;
+    }
+
+    .secret p{
+      position:relative;
+      z-index:1;
+      margin:0;
+      text-align:center;
+      white-space:pre-line;
+      line-height:1.86;
+      font-size:1.04rem;
+      color:#f1dfe4;
+    }
+
+    footer{
+      text-align:center;
+      padding:10px 0 6px;
+      color:#dcbfc8;
+      font-size:.95rem;
+    }
+
+    .visually-hidden{
+      position:absolute !important;
+      width:1px !important;
+      height:1px !important;
+      padding:0 !important;
+      margin:-1px !important;
+      overflow:hidden !important;
+      clip:rect(0,0,0,0) !important;
+      white-space:nowrap !important;
+      border:0 !important;
+    }
+
+    /* Desktop bouquet map */
+    .hit-1{ left:112px; top:114px; width:238px; height:238px; transition-delay:.36s; }
+    .img-1{ left:86px; top:78px; width:272px; z-index:4; }
+
+    .hit-2{ left:312px; top:38px; width:268px; height:268px; transition-delay:.48s; }
+    .img-2{ left:280px; top:0; width:300px; z-index:6; }
+
+    .hit-3{ left:546px; top:118px; width:232px; height:232px; transition-delay:.60s; }
+    .img-3{ left:526px; top:82px; width:248px; z-index:5; }
+
+    .hit-4{ left:168px; top:288px; width:250px; height:250px; transition-delay:.72s; }
+    .img-4{ left:138px; top:244px; width:286px; z-index:8; }
+
+    .hit-5{ left:450px; top:272px; width:254px; height:254px; transition-delay:.84s; }
+    .img-5{ left:430px; top:224px; width:286px; z-index:8; }
+
+    .hit-6{ left:312px; top:394px; width:234px; height:234px; transition-delay:.96s; }
+    .img-6{ left:286px; top:360px; width:262px; z-index:10; }
+
+    .hit-7{ left:74px; top:474px; width:220px; height:220px; transition-delay:1.08s; }
+    .img-7{ left:56px; top:438px; width:242px; z-index:7; }
+
+    .hit-8{ left:560px; top:484px; width:220px; height:220px; transition-delay:1.20s; }
+    .img-8{ left:542px; top:444px; width:242px; z-index:7; }
+
+    @media (max-width: 900px){
+      .page{
+        padding:24px 14px 24px;
+      }
+
+      h1{
+        font-size:clamp(2.5rem, 10vw, 3.4rem);
+      }
+
+      .subtitle{
+        font-size:1.22rem;
+      }
+
+      .bouquet-shell{
+        width:min(100%, 680px);
+        height:710px;
+      }
+
+      .bouquet-shadow{
+        width:380px;
+        height:100px;
+      }
+
+      .bouquet-back-glow{
+        width:500px;
+        height:500px;
+      }
+
+      .stem-fan{
+        width:420px;
+        height:250px;
+        bottom:112px;
+      }
+
+      .stem-fan span{
+        height:238px;
+      }
+
+      .bouquet-wrap{
+        width:390px;
+        height:250px;
+      }
+
+      .bouquet-wrap::before,
+      .bouquet-wrap::after{
+        width:224px;
+        height:220px;
+      }
+
+      .wrap-highlight{
+        width:132px;
+        bottom:56px;
+      }
+
+      .hit-1{ left:80px; top:106px; width:194px; height:194px; }
+      .img-1{ left:60px; top:78px; width:222px; }
+
+      .hit-2{ left:240px; top:48px; width:214px; height:214px; }
+      .img-2{ left:214px; top:18px; width:244px; }
+
+      .hit-3{ left:448px; top:118px; width:186px; height:186px; }
+      .img-3{ left:432px; top:94px; width:196px; }
+
+      .hit-4{ left:124px; top:274px; width:204px; height:204px; }
+      .img-4{ left:102px; top:236px; width:234px; }
+
+      .hit-5{ left:364px; top:266px; width:208px; height:208px; }
+      .img-5{ left:348px; top:224px; width:234px; }
+
+      .hit-6{ left:246px; top:374px; width:198px; height:198px; }
+      .img-6{ left:228px; top:340px; width:220px; }
+
+      .hit-7{ left:42px; top:452px; width:180px; height:180px; }
+      .img-7{ left:28px; top:422px; width:196px; }
+
+      .hit-8{ left:462px; top:462px; width:180px; height:180px; }
+      .img-8{ left:446px; top:430px; width:198px; }
+    }
+
+    @media (max-width: 640px){
+      .hero{
+        margin-bottom:20px;
+      }
+
+      .small-line{
+        font-size:.95rem;
+      }
+
+      .bouquet-shell{
+        width:100%;
+        height:600px;
+      }
+
+      .bouquet-shadow{
+        width:300px;
+        height:84px;
+        bottom:44px;
+      }
+
+      .bouquet-back-glow{
+        width:360px;
+        height:360px;
+      }
+
+      .stem-fan{
+        width:290px;
+        height:190px;
+        bottom:98px;
+      }
+
+      .stem-fan span{
+        width:7px;
+        height:184px;
+      }
+
+      .bouquet-wrap{
+        width:286px;
+        height:190px;
+        bottom:28px;
+      }
+
+      .bouquet-wrap::before,
+      .bouquet-wrap::after{
+        width:168px;
+        height:170px;
+      }
+
+      .wrap-highlight{
+        width:102px;
+        height:28px;
+        bottom:42px;
+      }
+
+      .hit-1{ left:20px; top:92px; width:152px; height:152px; }
+      .img-1{ left:10px; top:68px; width:176px; }
+
+      .hit-2{ left:122px; top:24px; width:176px; height:176px; }
+      .img-2{ left:112px; top:0; width:198px; }
+
+      .hit-3{ left:248px; top:102px; width:144px; height:144px; }
+      .img-3{ left:242px; top:82px; width:154px; }
+
+      .hit-4{ left:52px; top:234px; width:162px; height:162px; }
+      .img-4{ left:38px; top:206px; width:184px; }
+
+      .hit-5{ left:216px; top:230px; width:164px; height:164px; }
+      .img-5{ left:204px; top:202px; width:182px; }
+
+      .hit-6{ left:132px; top:320px; width:154px; height:154px; }
+      .img-6{ left:120px; top:298px; width:168px; }
+
+      .hit-7{ left:10px; top:394px; width:134px; height:134px; }
+      .img-7{ left:0; top:372px; width:146px; }
+
+      .hit-8{ left:254px; top:400px; width:134px; height:134px; }
+      .img-8{ left:246px; top:376px; width:146px; }
+
+      .opened-badge{
+        width:28px;
+        height:28px;
+        font-size:.8rem;
+      }
+
+      .card{
+        padding:20px 16px 16px;
+      }
+
+      .card h2{
+        font-size:1.78rem;
+      }
+
+      .card p,
+      .secret p{
+        font-size:.98rem;
+      }
+
+      .secret h3{
+        font-size:2.1rem;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce){
+      *,
+      *::before,
+      *::after{
+        animation-duration:0.01ms !important;
+        animation-iteration-count:1 !important;
+        transition-duration:0.01ms !important;
+        scroll-behavior:auto !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="ambient" id="ambient" aria-hidden="true"></div>
+
+  <div class="page">
+    <main class="container">
+      <section class="hero" aria-label="Website introduction">
+        <h1>For the beautiful woman you’ve become</h1>
+        <div class="subtitle">Tap each flower, my beautiful roshgulla.</div>
+        <div class="small-line">Each flower holds something I admire about you.</div>
+      </section>
+
+      <section class="main-stage" aria-label="Interactive flower bouquet">
+        <div class="bouquet-shell">
+          <div class="bouquet-shadow"></div>
+          <div class="bouquet-back-glow"></div>
+
+          <div class="stem-fan" aria-hidden="true">
+            <span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span>
+          </div>
+
+          <div class="bouquet-wrap" aria-hidden="true"></div>
+          <div class="wrap-highlight" aria-hidden="true"></div>
+
+          <!--
+            REPLACE THESE IMAGE FILE NAMES WITH YOUR OWN TRANSPARENT PNG/WEBP FILES.
+            Suggested filenames:
+            - rose1.png
+            - rose2.png
+            - sunflower1.png
+            - sunflower2.png
+            - babysbreath1.png
+            - babysbreath2.png
+
+            You can replace each src below with your own files.
+            Keep transparent backgrounds for best results.
+          -->
+
+          <button class="flower-hit hit-1" data-index="0" aria-label="Open message 1: The Woman You Are Becoming">
+            <span class="opened-badge" aria-hidden="true">✓</span>
+          </button>
+          <div class="flower-image img-1" aria-hidden="true">
+            <img src="rose1.png" alt="" />
+          </div>
+
+          <button class="flower-hit hit-2" data-index="1" aria-label="Open message 2: Your Light">
+            <span class="opened-badge" aria-hidden="true">✓</span>
+          </button>
+          <div class="flower-image img-2" aria-hidden="true">
+            <img src="sunflower1.png" alt="" />
+          </div>
+
+          <button class="flower-hit hit-3" data-index="2" aria-label="Open message 3: Your Heart">
+            <span class="opened-badge" aria-hidden="true">✓</span>
+          </button>
+          <div class="flower-image img-3" aria-hidden="true">
+            <img src="babysbreath1.png" alt="" />
+          </div>
+
+          <button class="flower-hit hit-4" data-index="3" aria-label="Open message 4: Your Courage">
+            <span class="opened-badge" aria-hidden="true">✓</span>
+          </button>
+          <div class="flower-image img-4" aria-hidden="true">
+            <img src="rose2.png" alt="" />
+          </div>
+
+          <button class="flower-hit hit-5" data-index="4" aria-label="Open message 5: Your Passion">
+            <span class="opened-badge" aria-hidden="true">✓</span>
+          </button>
+          <div class="flower-image img-5" aria-hidden="true">
+            <img src="sunflower2.png" alt="" />
+          </div>
+
+          <button class="flower-hit hit-6" data-index="5" aria-label="Open message 6: Your Love">
+            <span class="opened-badge" aria-hidden="true">✓</span>
+          </button>
+          <div class="flower-image img-6" aria-hidden="true">
+            <img src="babysbreath2.png" alt="" />
+          </div>
+
+          <button class="flower-hit hit-7" data-index="6" aria-label="Open message 7: Your Strength">
+            <span class="opened-badge" aria-hidden="true">✓</span>
+          </button>
+          <div class="flower-image img-7" aria-hidden="true">
+            <img src="rose1.png" alt="" />
+          </div>
+
+          <button class="flower-hit hit-8" data-index="7" aria-label="Open message 8: Women’s Day">
+            <span class="opened-badge" aria-hidden="true">✓</span>
+          </button>
+          <div class="flower-image img-8" aria-hidden="true">
+            <img src="sunflower1.png" alt="" />
+          </div>
+        </div>
+      </section>
+
+      <div class="hint">A little bouquet of everything I admire about you.</div>
+      <div class="counter" id="counter" aria-live="polite">0 of 8 flowers opened</div>
+
+      <section class="secret" id="secretSection" aria-label="Hidden final message">
+        <div class="secret-card">
+          <h3>The Heart of It All</h3>
+          <p>
+If there is one thing I want you to always remember, it’s this:
+
+I admire you so deeply.
+
+Your strength, your laughter, your empathy, your fire, your passion for acting, and the way you continue to shine even when the world tries to make things harder for you.
+
+You are one of the most incredible women I have ever known, and watching you grow, dream, fight, and succeed is something I will always feel honoured to witness.
+
+Happy Women’s Day to the woman who inspires me every single day.
+          </p>
+        </div>
+      </section>
+
+      <footer>Made with all my love.</footer>
+    </main>
+  </div>
+
+  <div class="modal" id="messageModal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="messageTitle">
+    <div class="card">
+      <button class="close-btn" id="closeModal" aria-label="Close message">✕</button>
+      <div class="card-content">
+        <div class="card-flower-label" id="messageType"></div>
+        <h2 id="messageTitle"></h2>
+        <p id="messageBody"></p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const messages = [
+      {
+        type: "White Rose",
+        title: "The Woman You Are Becoming",
+        body: "Watching you grow into the woman you are becoming is one of the most beautiful things I’ve ever witnessed. You carry yourself with such courage, fire, and clarity about who you are and what you stand for. I am endlessly proud of the strength, passion, and integrity that lives inside you."
+      },
+      {
+        type: "Sunflower",
+        title: "Your Light",
+        body: "You are pure sunshine in every room you walk into. Your laughter, your warmth, and the way you light up the space around you is something so rare and powerful. Being around you makes the world feel brighter, softer, and infinitely more alive."
+      },
+      {
+        type: "Baby's Breath",
+        title: "Your Heart",
+        body: "Your empathy is one of the most beautiful things about you. You care so deeply about people, about justice, about the world around you, and you never shrink that part of yourself. Your heart is fierce, compassionate, and impossibly strong."
+      },
+      {
+        type: "White Rose",
+        title: "Your Courage",
+        body: "Moving to another country at eighteen to pursue acting purely out of passion takes a kind of bravery most people never have. Despite every challenge, every moment of feeling like the only one in the room, you stood tall and kept chasing what you love. That courage in you inspires me every single day."
+      },
+      {
+        type: "Sunflower",
+        title: "Your Passion",
+        body: "The way you love acting is one of the most beautiful things I’ve ever seen. You don’t just perform — you feel, you dive into stories, you bring life to characters with such depth and honesty. I have no doubt in my mind that the world is going to see how extraordinary you are."
+      },
+      {
+        type: "Baby's Breath",
+        title: "Your Love",
+        body: "You are an incredible daughter, an amazing partner, and the kind of best friend people are lucky to have in their lives. The way you show up for the people you love says everything about the kind of woman you are — thoughtful, loyal, and deeply genuine."
+      },
+      {
+        type: "White Rose",
+        title: "Your Strength",
+        body: "You move through the world with such powerful conviction. You know exactly what you stand for, and you never let the world silence that fire in you. Your strength as a woman, especially in spaces where you are often the only one like you, is something I admire more than I can ever fully express."
+      },
+      {
+        type: "Sunflower",
+        title: "Women’s Day",
+        body: "On Women’s Day, I just want you to know how proud I am of you. Of your resilience, your courage, your humour, your brilliance, and your heart. The woman you are is extraordinary, and loving you is something I feel grateful for every single day."
+      }
+    ];
+
+    const flowerButtons = document.querySelectorAll(".flower-hit");
+    const modal = document.getElementById("messageModal");
+    const closeModalBtn = document.getElementById("closeModal");
+    const messageType = document.getElementById("messageType");
+    const messageTitle = document.getElementById("messageTitle");
+    const messageBody = document.getElementById("messageBody");
+    const counter = document.getElementById("counter");
+    const secretSection = document.getElementById("secretSection");
+    const ambient = document.getElementById("ambient");
+
+    const opened = new Set();
+    let lastFocusedFlower = null;
+
+    function createAmbientParticles(){
+      const groups = [
+        { type: "petal", count: 22, min: 16, max: 30 },
+        { type: "breath", count: 18, min: 4, max: 8 },
+        { type: "gold", count: 20, min: 4, max: 7 }
+      ];
+
+      groups.forEach(group => {
+        for(let i = 0; i < group.count; i++){
+          const el = document.createElement("span");
+          el.className = `float ${group.type}`;
+          const size = group.min + Math.random() * (group.max - group.min);
+          el.style.left = `${Math.random() * 100}%`;
+          el.style.top = `${Math.random() * 100}%`;
+          el.style.width = `${size}px`;
+          el.style.height = `${size * (group.type === "petal" ? 0.65 : 1)}px`;
+          el.style.animationDuration = `${16 + Math.random() * 18}s`;
+          el.style.animationDelay = `${-Math.random() * 22}s`;
+          el.style.setProperty("--x", `${-70 + Math.random() * 140}px`);
+          el.style.opacity =
+            group.type === "gold"
+              ? (0.20 + Math.random() * 0.18).toFixed(2)
+              : group.type === "petal"
+                ? (0.18 + Math.random() * 0.18).toFixed(2)
+                : (0.18 + Math.random() * 0.16).toFixed(2);
+
+          if(group.type === "petal"){
+            el.style.transform = `rotate(${Math.random() * 360}deg)`;
+          }
+
+          ambient.appendChild(el);
+        }
+      });
+    }
+
+    function updateCounter(){
+      const count = opened.size;
+      counter.textContent = `${count} of 8 flowers opened`;
+
+      if(count === 8){
+        secretSection.classList.add("revealed");
+        setTimeout(() => {
+          secretSection.scrollIntoView({ behavior: "smooth", block: "center" });
+        }, 350);
+      }
+    }
+
+    function openMessage(index, button){
+      const data = messages[index];
+      lastFocusedFlower = button;
+
+      messageType.textContent = data.type;
+      messageTitle.textContent = data.title;
+      messageBody.textContent = data.body;
+
+      modal.classList.add("show");
+      modal.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
+
+      if(!opened.has(index)){
+        opened.add(index);
+        button.classList.add("opened");
+        updateCounter();
+      }
+    }
+
+    function closeMessage(){
+      modal.classList.remove("show");
+      modal.setAttribute("aria-hidden", "true");
+      document.body.style.overflow = "";
+      if(lastFocusedFlower) lastFocusedFlower.focus();
+    }
+
+    flowerButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const index = Number(button.dataset.index);
+        openMessage(index, button);
+      });
+    });
+
+    closeModalBtn.addEventListener("click", closeMessage);
+
+    modal.addEventListener("click", (e) => {
+      if(e.target === modal) closeMessage();
+    });
+
+    window.addEventListener("keydown", (e) => {
+      if(e.key === "Escape" && modal.classList.contains("show")){
+        closeMessage();
+      }
+    });
+
+    createAmbientParticles();
+
+    window.addEventListener("load", () => {
+      requestAnimationFrame(() => {
+        document.body.classList.add("loaded");
+      });
+    });
+  </script>
+</body>
+</html>
