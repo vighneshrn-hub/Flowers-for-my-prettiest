@@ -25,6 +25,7 @@
       --glow:rgba(255,225,190,0.18);
       --card-border:rgba(255,255,255,0.18);
       --transition:480ms cubic-bezier(.22,1,.36,1);
+      --bouquet-anchor-bottom:136px;
     }
 
     *{
@@ -53,7 +54,36 @@
         radial-gradient(circle at 50% 0%, rgba(255,255,255,0.03), transparent 28%),
         radial-gradient(circle at 50% 100%, rgba(255,220,205,0.05), transparent 30%);
       pointer-events:none;
+      z-index:-6;
+    }
+
+    body::after{
+      content:"";
+      position:fixed;
+      inset:0;
+      background:
+        radial-gradient(circle at 50% 46%, rgba(255,220,196,0.05), transparent 22%),
+        radial-gradient(circle at 18% 34%, rgba(120,76,93,0.12), transparent 26%),
+        radial-gradient(circle at 82% 38%, rgba(114,73,87,0.1), transparent 24%),
+        radial-gradient(circle at 50% 86%, rgba(30,19,23,0.36), transparent 30%),
+        radial-gradient(circle at center, transparent 52%, rgba(10,7,9,0.42) 100%);
+      pointer-events:none;
       z-index:-5;
+    }
+
+    .grain{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      z-index:-4;
+      opacity:.12;
+      background-image:
+        radial-gradient(circle at 20% 20%, rgba(255,255,255,.12) .45px, transparent .8px),
+        radial-gradient(circle at 80% 30%, rgba(255,255,255,.08) .45px, transparent .8px),
+        radial-gradient(circle at 40% 80%, rgba(255,255,255,.08) .5px, transparent .9px),
+        radial-gradient(circle at 70% 70%, rgba(0,0,0,.16) .55px, transparent 1px);
+      background-size:22px 22px, 28px 28px, 24px 24px, 30px 30px;
+      background-position:0 0, 8px 4px, 4px 10px, 10px 14px;
     }
 
     body.loaded .hero{
@@ -74,7 +104,7 @@
 
     body.loaded .flower-hit{
       opacity:1;
-      transform:translateY(0) scale(1);
+      transform:translateX(var(--hit-x)) translateY(var(--hit-y)) scale(1);
     }
 
     .page{
@@ -89,7 +119,7 @@
       position:fixed;
       inset:0;
       pointer-events:none;
-      z-index:-1;
+      z-index:-3;
       overflow:hidden;
     }
 
@@ -202,12 +232,12 @@
       position:relative;
       display:flex;
       justify-content:center;
-      margin:10px auto 0;
+      margin:8px auto 0;
     }
 
     .bouquet-shell{
       position:relative;
-      width:min(860px, 100%);
+      width:min(900px, 100%);
       height:860px;
       opacity:0;
       transform:translateY(26px) scale(.985);
@@ -217,10 +247,10 @@
     .bouquet-shell::before{
       content:"";
       position:absolute;
-      inset:3% 10% 18%;
+      inset:1% 8% 15%;
       border-radius:50%;
       background:
-        radial-gradient(circle at 50% 45%, rgba(255,247,240,0.08), rgba(255,220,205,0.03) 34%, rgba(255,220,205,0) 70%);
+        radial-gradient(circle at 50% 38%, rgba(255,248,240,0.07), rgba(255,220,205,0.03) 32%, rgba(255,220,205,0) 72%);
       filter:blur(18px);
       z-index:0;
       pointer-events:none;
@@ -229,12 +259,12 @@
     .bouquet-shadow{
       position:absolute;
       left:50%;
-      bottom:54px;
+      bottom:48px;
       transform:translateX(-50%);
-      width:470px;
-      height:120px;
-      background:radial-gradient(ellipse at center, rgba(0,0,0,.42), rgba(0,0,0,0) 72%);
-      filter:blur(16px);
+      width:440px;
+      height:100px;
+      background:radial-gradient(ellipse at center, rgba(0,0,0,.46), rgba(0,0,0,0) 72%);
+      filter:blur(18px);
       z-index:0;
       pointer-events:none;
     }
@@ -242,33 +272,153 @@
     .bouquet-back-glow{
       position:absolute;
       left:50%;
-      top:48%;
+      top:43%;
       transform:translate(-50%,-50%);
       width:620px;
-      height:620px;
+      height:560px;
       border-radius:50%;
       background:
-        radial-gradient(circle, rgba(255,234,213,0.08) 0%, rgba(255,214,186,0.04) 28%, rgba(255,214,186,0) 70%);
+        radial-gradient(circle, rgba(255,234,213,0.07) 0%, rgba(255,214,186,0.03) 34%, rgba(255,214,186,0) 70%);
       filter:blur(26px);
       z-index:0;
       pointer-events:none;
     }
 
-    .bouquet-images{
+    .bouquet-haze{
       position:absolute;
-      inset:0;
+      left:50%;
+      top:44%;
+      transform:translate(-50%,-50%);
+      width:760px;
+      height:620px;
+      border-radius:50%;
+      background:
+        radial-gradient(circle at 30% 40%, rgba(121,79,92,0.18), transparent 28%),
+        radial-gradient(circle at 72% 40%, rgba(108,72,84,0.16), transparent 30%),
+        radial-gradient(circle at 50% 72%, rgba(255,224,199,0.04), transparent 25%);
+      filter:blur(34px);
+      z-index:0;
+      pointer-events:none;
+      opacity:.85;
+    }
+
+    .tie-center-glow{
+      position:absolute;
+      left:50%;
+      bottom:145px;
+      transform:translateX(-50%);
+      width:170px;
+      height:90px;
+      background:radial-gradient(ellipse at center, rgba(255,220,190,0.12), rgba(255,220,190,0) 70%);
+      filter:blur(10px);
       z-index:2;
       pointer-events:none;
     }
 
+    .stem-fan{
+      position:absolute;
+      left:50%;
+      bottom:118px;
+      transform:translateX(-50%);
+      width:550px;
+      height:310px;
+      z-index:1;
+      pointer-events:none;
+      opacity:.86;
+      filter:drop-shadow(0 16px 20px rgba(0,0,0,.16));
+    }
+
+    .stem-fan span{
+      position:absolute;
+      bottom:0;
+      left:50%;
+      width:9px;
+      border-radius:999px;
+      background:linear-gradient(180deg, rgba(126,163,110,.82), rgba(63,97,62,.94));
+      transform-origin:center bottom;
+      box-shadow:inset 0 0 0 1px rgba(255,255,255,.04);
+    }
+
+    .stem-fan span:nth-child(1){ height:308px; transform:translateX(-50%) rotate(-30deg); }
+    .stem-fan span:nth-child(2){ height:298px; transform:translateX(-50%) rotate(-21deg); }
+    .stem-fan span:nth-child(3){ height:288px; transform:translateX(-50%) rotate(-12deg); }
+    .stem-fan span:nth-child(4){ height:302px; transform:translateX(-50%) rotate(-4deg); }
+    .stem-fan span:nth-child(5){ height:300px; transform:translateX(-50%) rotate(5deg); }
+    .stem-fan span:nth-child(6){ height:292px; transform:translateX(-50%) rotate(14deg); }
+    .stem-fan span:nth-child(7){ height:302px; transform:translateX(-50%) rotate(22deg); }
+    .stem-fan span:nth-child(8){ height:312px; transform:translateX(-50%) rotate(31deg); }
+
+    .bouquet-wrap{
+      position:absolute;
+      left:50%;
+      bottom:42px;
+      transform:translateX(-50%);
+      width:266px;
+      height:146px;
+      z-index:3;
+      pointer-events:none;
+      opacity:.5;
+      filter:drop-shadow(0 12px 22px rgba(0,0,0,.12));
+    }
+
+    .bouquet-wrap::before,
+    .bouquet-wrap::after{
+      content:"";
+      position:absolute;
+      bottom:0;
+      width:142px;
+      height:138px;
+      background:
+        linear-gradient(180deg, rgba(255,246,240,0.10), rgba(255,232,223,0.04));
+      border:1px solid rgba(255,255,255,0.07);
+      backdrop-filter:blur(6px);
+      -webkit-backdrop-filter:blur(6px);
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.06),
+        0 10px 18px rgba(0,0,0,.08);
+    }
+
+    .bouquet-wrap::before{
+      left:10px;
+      transform:rotate(-13deg);
+      clip-path:polygon(0 0, 100% 0, 68% 100%, 10% 88%);
+      border-radius:14px 16px 58px 52px;
+    }
+
+    .bouquet-wrap::after{
+      right:10px;
+      transform:rotate(13deg);
+      clip-path:polygon(0 0, 100% 0, 90% 88%, 32% 100%);
+      border-radius:16px 14px 52px 58px;
+    }
+
+    .wrap-band{
+      position:absolute;
+      left:50%;
+      bottom:58px;
+      transform:translateX(-50%);
+      width:82px;
+      height:16px;
+      border-radius:999px;
+      background:linear-gradient(180deg, rgba(192,125,142,.52), rgba(104,58,71,.72));
+      box-shadow:
+        0 8px 14px rgba(0,0,0,.12),
+        inset 0 1px 0 rgba(255,255,255,.14);
+      z-index:4;
+      pointer-events:none;
+      opacity:.66;
+    }
+
     .flower-image{
       position:absolute;
+      left:50%;
+      bottom:var(--bouquet-anchor-bottom);
+      width:var(--flower-width);
+      z-index:var(--flower-z);
       user-select:none;
       pointer-events:none;
-      filter:
-        drop-shadow(0 12px 18px rgba(0,0,0,.22))
-        drop-shadow(0 26px 38px rgba(0,0,0,.12));
-      transform-origin:center bottom;
+      transform-origin:50% 100%;
+      transform:translateX(var(--flower-x)) rotate(var(--flower-rot)) scale(var(--flower-scale));
       transition:transform var(--transition), filter var(--transition);
     }
 
@@ -279,36 +429,44 @@
       object-fit:contain;
       user-select:none;
       -webkit-user-drag:none;
+      filter:
+        drop-shadow(0 14px 18px rgba(0,0,0,.20))
+        drop-shadow(0 26px 40px rgba(0,0,0,.10));
     }
 
     .flower-image::after{
       content:"";
       position:absolute;
-      inset:18% 18% 20%;
+      inset:20% 18% 24%;
       border-radius:50%;
-      background:radial-gradient(circle, rgba(255,233,196,0.18), rgba(255,233,196,0) 68%);
-      filter:blur(16px);
-      opacity:.22;
+      background:radial-gradient(circle, rgba(255,233,196,0.16), rgba(255,233,196,0) 70%);
+      filter:blur(18px);
+      opacity:.2;
       z-index:-1;
+      transition:opacity var(--transition), transform var(--transition);
     }
 
     .flower-hit{
       position:absolute;
+      left:50%;
+      bottom:var(--bouquet-anchor-bottom);
+      width:var(--hit-size);
+      height:var(--hit-size);
       z-index:4;
       border:none;
       padding:0;
       background:none;
       cursor:pointer;
       opacity:0;
-      transform:translateY(18px) scale(.96);
+      outline:none;
+      border-radius:50%;
+      touch-action:manipulation;
+      transform:translateX(var(--hit-x)) translateY(var(--hit-y)) scale(.96);
       transition:
         transform var(--transition),
         opacity 800ms ease,
         filter var(--transition),
         box-shadow var(--transition);
-      outline:none;
-      border-radius:50%;
-      touch-action:manipulation;
     }
 
     .flower-hit::before{
@@ -326,7 +484,7 @@
 
     .flower-hit:hover,
     .flower-hit:focus-visible{
-      transform:translateY(-3px) scale(1.03);
+      transform:translateX(var(--hit-x)) translateY(calc(var(--hit-y) - 3px)) scale(1.03);
       filter:drop-shadow(0 0 18px rgba(255,227,181,.28));
     }
 
@@ -335,7 +493,7 @@
     }
 
     .flower-hit.opened{
-      z-index:10;
+      z-index:12;
     }
 
     .flower-hit.opened::before{
@@ -344,20 +502,24 @@
     }
 
     .flower-hit.opened + .flower-image{
-      transform:scale(1.05) translateY(-4px);
+      transform:translateX(var(--flower-x)) rotate(var(--flower-rot)) scale(calc(var(--flower-scale) * 1.04)) translateY(-4px);
+    }
+
+    .flower-hit.opened + .flower-image img{
       filter:
-        drop-shadow(0 18px 22px rgba(0,0,0,.22))
+        drop-shadow(0 18px 24px rgba(0,0,0,.24))
         drop-shadow(0 34px 48px rgba(0,0,0,.16));
     }
 
     .flower-hit.opened + .flower-image::after{
-      opacity:.45;
+      opacity:.42;
+      transform:scale(1.08);
     }
 
     .opened-badge{
       position:absolute;
-      right:14%;
-      bottom:14%;
+      right:12%;
+      bottom:12%;
       width:34px;
       height:34px;
       border-radius:50%;
@@ -379,99 +541,6 @@
     .flower-hit.opened .opened-badge{
       opacity:1;
       transform:translateY(0) scale(1);
-    }
-
-    .stem-fan{
-      position:absolute;
-      left:50%;
-      bottom:130px;
-      transform:translateX(-50%);
-      width:520px;
-      height:290px;
-      z-index:1;
-      pointer-events:none;
-      opacity:.84;
-      filter:drop-shadow(0 18px 22px rgba(0,0,0,.18));
-    }
-
-    .stem-fan span{
-      position:absolute;
-      bottom:0;
-      left:50%;
-      width:10px;
-      height:280px;
-      border-radius:999px;
-      background:linear-gradient(180deg, rgba(127,164,111,.9), rgba(70,104,69,.95));
-      transform-origin:center bottom;
-      box-shadow:inset 0 0 0 1px rgba(255,255,255,.05);
-    }
-
-    .stem-fan span:nth-child(1){ transform:translateX(-50%) rotate(-28deg); }
-    .stem-fan span:nth-child(2){ transform:translateX(-50%) rotate(-20deg); height:292px; }
-    .stem-fan span:nth-child(3){ transform:translateX(-50%) rotate(-12deg); height:286px; }
-    .stem-fan span:nth-child(4){ transform:translateX(-50%) rotate(-4deg); height:298px; }
-    .stem-fan span:nth-child(5){ transform:translateX(-50%) rotate(6deg); height:294px; }
-    .stem-fan span:nth-child(6){ transform:translateX(-50%) rotate(14deg); height:286px; }
-    .stem-fan span:nth-child(7){ transform:translateX(-50%) rotate(22deg); height:292px; }
-    .stem-fan span:nth-child(8){ transform:translateX(-50%) rotate(30deg); height:280px; }
-
-    .bouquet-wrap{
-      position:absolute;
-      left:50%;
-      bottom:38px;
-      transform:translateX(-50%);
-      width:470px;
-      height:300px;
-      z-index:3;
-      pointer-events:none;
-      filter:drop-shadow(0 24px 34px rgba(0,0,0,.18));
-    }
-
-    .bouquet-wrap::before,
-    .bouquet-wrap::after{
-      content:"";
-      position:absolute;
-      bottom:0;
-      width:270px;
-      height:260px;
-      background:
-        linear-gradient(180deg, rgba(255,246,240,0.2), rgba(255,232,223,0.11));
-      border:1px solid rgba(255,255,255,0.14);
-      backdrop-filter:blur(10px);
-      -webkit-backdrop-filter:blur(10px);
-      box-shadow:
-        inset 0 1px 0 rgba(255,255,255,.12),
-        0 18px 40px rgba(0,0,0,.12);
-    }
-
-    .bouquet-wrap::before{
-      left:18px;
-      transform:rotate(-16deg);
-      clip-path:polygon(0 0, 100% 0, 64% 100%, 10% 86%);
-      border-radius:18px 24px 110px 80px;
-    }
-
-    .bouquet-wrap::after{
-      right:18px;
-      transform:rotate(16deg);
-      clip-path:polygon(0 0, 100% 0, 90% 86%, 36% 100%);
-      border-radius:24px 18px 80px 110px;
-    }
-
-    .wrap-highlight{
-      position:absolute;
-      left:50%;
-      bottom:62px;
-      transform:translateX(-50%);
-      width:160px;
-      height:36px;
-      border-radius:999px;
-      background:linear-gradient(180deg, rgba(218,164,177,.62), rgba(122,75,88,.78));
-      box-shadow:
-        0 10px 18px rgba(0,0,0,.14),
-        inset 0 1px 0 rgba(255,255,255,.2);
-      z-index:4;
-      pointer-events:none;
     }
 
     .counter{
@@ -680,44 +749,30 @@
       font-size:.95rem;
     }
 
-    .visually-hidden{
-      position:absolute !important;
-      width:1px !important;
-      height:1px !important;
-      padding:0 !important;
-      margin:-1px !important;
-      overflow:hidden !important;
-      clip:rect(0,0,0,0) !important;
-      white-space:nowrap !important;
-      border:0 !important;
-    }
+    /* Shared anchor fan composition */
+    .img-1{ --flower-width:246px; --flower-x:-252px; --flower-rot:-28deg; --flower-scale:.94; --flower-z:5; }
+    .img-2{ --flower-width:314px; --flower-x:-98px;  --flower-rot:-10deg; --flower-scale:1.06; --flower-z:9; }
+    .img-3{ --flower-width:224px; --flower-x:242px;  --flower-rot:24deg;  --flower-scale:.93; --flower-z:4; }
+    .img-4{ --flower-width:286px; --flower-x:-182px; --flower-rot:-18deg; --flower-scale:1.03; --flower-z:10; }
+    .img-5{ --flower-width:288px; --flower-x:154px;  --flower-rot:15deg;  --flower-scale:1.01; --flower-z:8; }
+    .img-6{ --flower-width:246px; --flower-x:0px;    --flower-rot:0deg;   --flower-scale:1;   --flower-z:11; }
+    .img-7{ --flower-width:218px; --flower-x:-320px; --flower-rot:-38deg; --flower-scale:.88; --flower-z:3; }
+    .img-8{ --flower-width:220px; --flower-x:320px;  --flower-rot:34deg;  --flower-scale:.89; --flower-z:6; }
 
-    /* Desktop bouquet map */
-    .hit-1{ left:112px; top:114px; width:238px; height:238px; transition-delay:.36s; }
-    .img-1{ left:86px; top:78px; width:272px; z-index:4; }
-
-    .hit-2{ left:312px; top:38px; width:268px; height:268px; transition-delay:.48s; }
-    .img-2{ left:280px; top:0; width:300px; z-index:6; }
-
-    .hit-3{ left:546px; top:118px; width:232px; height:232px; transition-delay:.60s; }
-    .img-3{ left:526px; top:82px; width:248px; z-index:5; }
-
-    .hit-4{ left:168px; top:288px; width:250px; height:250px; transition-delay:.72s; }
-    .img-4{ left:138px; top:244px; width:286px; z-index:8; }
-
-    .hit-5{ left:450px; top:272px; width:254px; height:254px; transition-delay:.84s; }
-    .img-5{ left:430px; top:224px; width:286px; z-index:8; }
-
-    .hit-6{ left:312px; top:394px; width:234px; height:234px; transition-delay:.96s; }
-    .img-6{ left:286px; top:360px; width:262px; z-index:10; }
-
-    .hit-7{ left:74px; top:474px; width:220px; height:220px; transition-delay:1.08s; }
-    .img-7{ left:56px; top:438px; width:242px; z-index:7; }
-
-    .hit-8{ left:560px; top:484px; width:220px; height:220px; transition-delay:1.20s; }
-    .img-8{ left:542px; top:444px; width:242px; z-index:7; }
+    .hit-1{ --hit-size:184px; --hit-x:-214px; --hit-y:-454px; transition-delay:.36s; }
+    .hit-2{ --hit-size:220px; --hit-x:-52px;  --hit-y:-566px; transition-delay:.48s; }
+    .hit-3{ --hit-size:174px; --hit-x:224px;  --hit-y:-448px; transition-delay:.60s; }
+    .hit-4{ --hit-size:198px; --hit-x:-150px; --hit-y:-356px; transition-delay:.72s; }
+    .hit-5{ --hit-size:198px; --hit-x:146px;  --hit-y:-352px; transition-delay:.84s; }
+    .hit-6{ --hit-size:176px; --hit-x:0px;    --hit-y:-286px; transition-delay:.96s; }
+    .hit-7{ --hit-size:164px; --hit-x:-292px; --hit-y:-264px; transition-delay:1.08s; }
+    .hit-8{ --hit-size:164px; --hit-x:292px;  --hit-y:-258px; transition-delay:1.20s; }
 
     @media (max-width: 900px){
+      :root{
+        --bouquet-anchor-bottom:118px;
+      }
+
       .page{
         padding:24px 14px 24px;
       }
@@ -731,72 +786,89 @@
       }
 
       .bouquet-shell{
-        width:min(100%, 680px);
-        height:710px;
-      }
-
-      .bouquet-shadow{
-        width:380px;
-        height:100px;
+        width:min(100%, 700px);
+        height:720px;
       }
 
       .bouquet-back-glow{
-        width:500px;
-        height:500px;
+        width:520px;
+        height:470px;
+      }
+
+      .bouquet-haze{
+        width:620px;
+        height:520px;
+      }
+
+      .bouquet-shadow{
+        width:360px;
+        height:88px;
+      }
+
+      .tie-center-glow{
+        bottom:126px;
       }
 
       .stem-fan{
-        width:420px;
-        height:250px;
-        bottom:112px;
+        width:440px;
+        height:260px;
+        bottom:92px;
       }
 
       .stem-fan span{
-        height:238px;
+        width:8px;
       }
 
+      .stem-fan span:nth-child(1){ height:258px; }
+      .stem-fan span:nth-child(2){ height:248px; }
+      .stem-fan span:nth-child(3){ height:240px; }
+      .stem-fan span:nth-child(4){ height:252px; }
+      .stem-fan span:nth-child(5){ height:250px; }
+      .stem-fan span:nth-child(6){ height:242px; }
+      .stem-fan span:nth-child(7){ height:252px; }
+      .stem-fan span:nth-child(8){ height:260px; }
+
       .bouquet-wrap{
-        width:390px;
-        height:250px;
+        width:236px;
+        height:132px;
+        bottom:36px;
       }
 
       .bouquet-wrap::before,
       .bouquet-wrap::after{
-        width:224px;
-        height:220px;
+        width:126px;
+        height:124px;
       }
 
-      .wrap-highlight{
-        width:132px;
-        bottom:56px;
+      .wrap-band{
+        width:74px;
+        bottom:50px;
       }
 
-      .hit-1{ left:80px; top:106px; width:194px; height:194px; }
-      .img-1{ left:60px; top:78px; width:222px; }
+      .img-1{ --flower-width:202px; --flower-x:-206px; --flower-rot:-27deg; --flower-scale:.93; }
+      .img-2{ --flower-width:254px; --flower-x:-76px;  --flower-rot:-9deg;  --flower-scale:1.04; }
+      .img-3{ --flower-width:182px; --flower-x:198px;  --flower-rot:23deg;  --flower-scale:.92; }
+      .img-4{ --flower-width:228px; --flower-x:-146px; --flower-rot:-17deg; --flower-scale:1.02; }
+      .img-5{ --flower-width:232px; --flower-x:122px;  --flower-rot:14deg;  --flower-scale:1; }
+      .img-6{ --flower-width:198px; --flower-x:0px;    --flower-rot:0deg;   --flower-scale:1; }
+      .img-7{ --flower-width:178px; --flower-x:-256px; --flower-rot:-36deg; --flower-scale:.87; }
+      .img-8{ --flower-width:180px; --flower-x:256px;  --flower-rot:32deg;  --flower-scale:.88; }
 
-      .hit-2{ left:240px; top:48px; width:214px; height:214px; }
-      .img-2{ left:214px; top:18px; width:244px; }
-
-      .hit-3{ left:448px; top:118px; width:186px; height:186px; }
-      .img-3{ left:432px; top:94px; width:196px; }
-
-      .hit-4{ left:124px; top:274px; width:204px; height:204px; }
-      .img-4{ left:102px; top:236px; width:234px; }
-
-      .hit-5{ left:364px; top:266px; width:208px; height:208px; }
-      .img-5{ left:348px; top:224px; width:234px; }
-
-      .hit-6{ left:246px; top:374px; width:198px; height:198px; }
-      .img-6{ left:228px; top:340px; width:220px; }
-
-      .hit-7{ left:42px; top:452px; width:180px; height:180px; }
-      .img-7{ left:28px; top:422px; width:196px; }
-
-      .hit-8{ left:462px; top:462px; width:180px; height:180px; }
-      .img-8{ left:446px; top:430px; width:198px; }
+      .hit-1{ --hit-size:154px; --hit-x:-172px; --hit-y:-374px; }
+      .hit-2{ --hit-size:182px; --hit-x:-40px;  --hit-y:-464px; }
+      .hit-3{ --hit-size:146px; --hit-x:184px;  --hit-y:-370px; }
+      .hit-4{ --hit-size:164px; --hit-x:-122px; --hit-y:-294px; }
+      .hit-5{ --hit-size:164px; --hit-x:118px;  --hit-y:-292px; }
+      .hit-6{ --hit-size:150px; --hit-x:0px;    --hit-y:-234px; }
+      .hit-7{ --hit-size:136px; --hit-x:-232px; --hit-y:-220px; }
+      .hit-8{ --hit-size:136px; --hit-x:232px;  --hit-y:-214px; }
     }
 
     @media (max-width: 640px){
+      :root{
+        --bouquet-anchor-bottom:94px;
+      }
+
       .hero{
         margin-bottom:20px;
       }
@@ -807,72 +879,87 @@
 
       .bouquet-shell{
         width:100%;
-        height:600px;
-      }
-
-      .bouquet-shadow{
-        width:300px;
-        height:84px;
-        bottom:44px;
+        height:610px;
       }
 
       .bouquet-back-glow{
         width:360px;
+        height:320px;
+      }
+
+      .bouquet-haze{
+        width:440px;
         height:360px;
       }
 
+      .bouquet-shadow{
+        width:280px;
+        height:74px;
+        bottom:34px;
+      }
+
+      .tie-center-glow{
+        width:126px;
+        height:64px;
+        bottom:104px;
+      }
+
       .stem-fan{
-        width:290px;
+        width:300px;
         height:190px;
-        bottom:98px;
+        bottom:70px;
       }
 
       .stem-fan span{
-        width:7px;
-        height:184px;
+        width:6px;
       }
 
+      .stem-fan span:nth-child(1){ height:188px; }
+      .stem-fan span:nth-child(2){ height:182px; }
+      .stem-fan span:nth-child(3){ height:176px; }
+      .stem-fan span:nth-child(4){ height:184px; }
+      .stem-fan span:nth-child(5){ height:182px; }
+      .stem-fan span:nth-child(6){ height:178px; }
+      .stem-fan span:nth-child(7){ height:184px; }
+      .stem-fan span:nth-child(8){ height:190px; }
+
       .bouquet-wrap{
-        width:286px;
-        height:190px;
-        bottom:28px;
+        width:188px;
+        height:108px;
+        bottom:22px;
+        opacity:.46;
       }
 
       .bouquet-wrap::before,
       .bouquet-wrap::after{
-        width:168px;
-        height:170px;
+        width:100px;
+        height:100px;
       }
 
-      .wrap-highlight{
-        width:102px;
-        height:28px;
-        bottom:42px;
+      .wrap-band{
+        width:62px;
+        height:14px;
+        bottom:34px;
+        opacity:.58;
       }
 
-      .hit-1{ left:20px; top:92px; width:152px; height:152px; }
-      .img-1{ left:10px; top:68px; width:176px; }
+      .img-1{ --flower-width:154px; --flower-x:-148px; --flower-rot:-26deg; --flower-scale:.92; }
+      .img-2{ --flower-width:190px; --flower-x:-48px;  --flower-rot:-8deg;  --flower-scale:1.03; }
+      .img-3{ --flower-width:138px; --flower-x:144px;  --flower-rot:22deg;  --flower-scale:.91; }
+      .img-4{ --flower-width:174px; --flower-x:-108px; --flower-rot:-16deg; --flower-scale:1.01; }
+      .img-5{ --flower-width:176px; --flower-x:92px;   --flower-rot:13deg;  --flower-scale:.99; }
+      .img-6{ --flower-width:152px; --flower-x:0px;    --flower-rot:0deg;   --flower-scale:1; }
+      .img-7{ --flower-width:132px; --flower-x:-184px; --flower-rot:-34deg; --flower-scale:.86; }
+      .img-8{ --flower-width:134px; --flower-x:184px;  --flower-rot:31deg;  --flower-scale:.87; }
 
-      .hit-2{ left:122px; top:24px; width:176px; height:176px; }
-      .img-2{ left:112px; top:0; width:198px; }
-
-      .hit-3{ left:248px; top:102px; width:144px; height:144px; }
-      .img-3{ left:242px; top:82px; width:154px; }
-
-      .hit-4{ left:52px; top:234px; width:162px; height:162px; }
-      .img-4{ left:38px; top:206px; width:184px; }
-
-      .hit-5{ left:216px; top:230px; width:164px; height:164px; }
-      .img-5{ left:204px; top:202px; width:182px; }
-
-      .hit-6{ left:132px; top:320px; width:154px; height:154px; }
-      .img-6{ left:120px; top:298px; width:168px; }
-
-      .hit-7{ left:10px; top:394px; width:134px; height:134px; }
-      .img-7{ left:0; top:372px; width:146px; }
-
-      .hit-8{ left:254px; top:400px; width:134px; height:134px; }
-      .img-8{ left:246px; top:376px; width:146px; }
+      .hit-1{ --hit-size:118px; --hit-x:-124px; --hit-y:-286px; }
+      .hit-2{ --hit-size:138px; --hit-x:-26px;  --hit-y:-346px; }
+      .hit-3{ --hit-size:112px; --hit-x:130px;  --hit-y:-282px; }
+      .hit-4{ --hit-size:126px; --hit-x:-94px;  --hit-y:-224px; }
+      .hit-5{ --hit-size:126px; --hit-x:88px;   --hit-y:-222px; }
+      .hit-6{ --hit-size:116px; --hit-x:0px;    --hit-y:-178px; }
+      .hit-7{ --hit-size:104px; --hit-x:-164px; --hit-y:-166px; }
+      .hit-8{ --hit-size:104px; --hit-x:164px;  --hit-y:-160px; }
 
       .opened-badge{
         width:28px;
@@ -911,6 +998,7 @@
   </style>
 </head>
 <body>
+  <div class="grain" aria-hidden="true"></div>
   <div class="ambient" id="ambient" aria-hidden="true"></div>
 
   <div class="page">
@@ -925,6 +1013,9 @@
         <div class="bouquet-shell">
           <div class="bouquet-shadow"></div>
           <div class="bouquet-back-glow"></div>
+          <div class="bouquet-haze"></div>
+
+          <div class="tie-center-glow" aria-hidden="true"></div>
 
           <div class="stem-fan" aria-hidden="true">
             <span></span><span></span><span></span><span></span>
@@ -932,7 +1023,7 @@
           </div>
 
           <div class="bouquet-wrap" aria-hidden="true"></div>
-          <div class="wrap-highlight" aria-hidden="true"></div>
+          <div class="wrap-band" aria-hidden="true"></div>
 
           <!--
             REPLACE THESE IMAGE FILE NAMES WITH YOUR OWN TRANSPARENT PNG/WEBP FILES.
